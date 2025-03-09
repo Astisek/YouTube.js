@@ -40,12 +40,14 @@ export async function download(
       headers: Constants.STREAM_HEADERS,
       redirect: 'follow'
     });
+    const clonedResponse = response.clone();
 
+    
     // Throw if the response is not 2xx
-    if (!response.ok)
+    if (!clonedResponse.ok)
       throw new InnertubeError('The server responded with a non 2xx status code', { error_type: 'FETCH_FAILED', response });
-
-    const body = response.body;
+    
+    const body = clonedResponse.body;
 
     if (!body)
       throw new InnertubeError('Could not get ReadableStream from fetch Response.', { error_type: 'FETCH_FAILED', response });
